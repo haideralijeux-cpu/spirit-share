@@ -159,7 +159,6 @@ export function Profile() {
           </p>
         </div>
         <div className="flex gap-3 justify-center mb-6">
-          <EditProfileDialog onProfileUpdate={handleProfileUpdate} />
           <Link to="/home/submit">
             <Button className="bg-gradient-primary hover:shadow-glow font-semibold px-8 py-3 rounded-xl transition-all duration-300 transform hover:scale-[1.02]">
               <Plus className="h-5 w-5 mr-2" />
@@ -168,6 +167,54 @@ export function Profile() {
           </Link>
         </div>
         <div className="w-24 h-1 bg-gradient-primary rounded-full mx-auto"></div>
+      </div>
+      
+      {/* Profile Information Card */}
+      <div className="mb-12 animate-fade-in">
+        <Card className="max-w-2xl mx-auto bg-card/70 backdrop-blur-sm border border-border/50 rounded-2xl overflow-hidden card-hover">
+          <CardHeader className="pb-6">
+            <div className="flex items-center gap-6">
+              <div className="relative">
+                {profile?.avatar_url ? (
+                  <img 
+                    src={profile.avatar_url} 
+                    alt="Profile avatar" 
+                    className="w-20 h-20 rounded-full object-cover border-4 border-primary/20"
+                    onError={(e) => {
+                      e.currentTarget.style.display = 'none';
+                      e.currentTarget.nextElementSibling?.classList.remove('hidden');
+                    }}
+                  />
+                ) : null}
+                <div className={`w-20 h-20 rounded-full bg-gradient-primary flex items-center justify-center border-4 border-white/20 ${profile?.avatar_url ? 'hidden' : ''}`}>
+                  <User className="h-10 w-10 text-white" />
+                </div>
+              </div>
+              <div className="flex-1">
+                <h2 className="text-2xl font-serif font-bold text-foreground mb-2">
+                  {profile?.display_name || user?.email || 'QuickQuotes User'}
+                </h2>
+                <p className="text-muted-foreground font-medium">
+                  {user?.email}
+                </p>
+              </div>
+              <EditProfileDialog onProfileUpdate={handleProfileUpdate} />
+            </div>
+          </CardHeader>
+          {profile?.bio && (
+            <CardContent className="pt-0">
+              <div className="bg-accent/20 rounded-xl p-4 border border-border/30">
+                <h3 className="font-semibold text-foreground mb-2 flex items-center gap-2">
+                  <Quote className="h-4 w-4 text-primary" />
+                  About Me
+                </h3>
+                <p className="text-foreground leading-relaxed">
+                  {profile.bio}
+                </p>
+              </div>
+            </CardContent>
+          )}
+        </Card>
       </div>
       
       {quotes.length === 0 ? (
