@@ -268,8 +268,7 @@ export function Landing() {
                         </div>
                         <Button 
                           type="submit" 
-                          size="lg"
-                          className="w-full h-16 bg-gradient-primary hover:shadow-glow font-semibold text-lg rounded-xl transition-all duration-300 transform hover:scale-[1.02]" 
+                          className="w-full h-12 bg-gradient-primary hover:shadow-glow font-semibold rounded-xl transition-all duration-300 transform hover:scale-[1.02]" 
                           disabled={isLoading}
                         >
                           {isLoading ? (
