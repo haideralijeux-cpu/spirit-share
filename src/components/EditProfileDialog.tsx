@@ -80,6 +80,8 @@ export function EditProfileDialog({ onProfileUpdate }: EditProfileDialogProps) {
           display_name: profile.display_name || null,
           bio: profile.bio || null,
           avatar_url: profile.avatar_url || null,
+        }, {
+          onConflict: 'user_id'
         });
 
       if (error) throw error;
