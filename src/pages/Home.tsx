@@ -2,16 +2,13 @@ import { useEffect, useState } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
-import { Quote } from 'lucide-react';
+import { Quote, Sparkles } from 'lucide-react';
 
 interface QuoteData {
   id: string;
   content: string;
   author: string;
   created_at: string;
-  profiles: {
-    id: string;
-  } | null;
 }
 
 export function Home() {
@@ -27,13 +24,7 @@ export function Home() {
     try {
       const { data, error } = await supabase
         .from('quotes')
-        .select(`
-          id,
-          content,
-          author,
-          created_at,
-          profiles:user_id (id)
-        `)
+        .select('id, content, author, created_at')
         .order('created_at', { ascending: false });
 
       if (error) throw error;
@@ -52,40 +43,65 @@ export function Home() {
 
   if (loading) {
     return (
-      <div className="container mx-auto px-4 py-8">
-        <div className="text-center">
-          <div className="text-lg text-muted-foreground">Loading quotes...</div>
+      <div className="container mx-auto px-4 py-12">
+        <div className="text-center animate-scale-in">
+          <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-primary mb-6 animate-glow">
+            <Quote className="h-8 w-8 text-white" />
+          </div>
+          <div className="text-lg text-muted-foreground font-medium">Loading beautiful quotes...</div>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <div className="text-center mb-8">
-        <h1 className="text-3xl font-bold text-primary mb-2">Inspirational Quotes</h1>
-        <p className="text-muted-foreground">Discover wisdom shared by our community</p>
+    <div className="container mx-auto px-4 py-12">
+      <div className="text-center mb-12 animate-fade-in-up">
+        <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-primary mb-6 animate-float">
+          <Sparkles className="h-8 w-8 text-white" />
+        </div>
+        <h1 className="text-5xl font-serif font-bold bg-gradient-primary bg-clip-text text-transparent mb-4">
+          Inspirational Gallery
+        </h1>
+        <p className="text-xl text-muted-foreground font-medium max-w-2xl mx-auto">
+          Discover wisdom and inspiration shared by our beautiful community ✨
+        </p>
+        <div className="w-24 h-1 bg-gradient-primary rounded-full mx-auto mt-6"></div>
       </div>
 
       {quotes.length === 0 ? (
-        <div className="text-center py-12">
-          <Quote className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-          <h3 className="text-lg font-medium text-foreground mb-2">No quotes yet</h3>
-          <p className="text-muted-foreground">Be the first to share an inspiring quote!</p>
+        <div className="text-center py-20 animate-scale-in">
+          <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-gradient-accent mb-6 animate-float">
+            <Quote className="h-10 w-10 text-accent-foreground" />
+          </div>
+          <h3 className="text-2xl font-serif font-semibold text-foreground mb-3">No quotes yet</h3>
+          <p className="text-lg text-muted-foreground font-medium">Be the first to share an inspiring quote! 🌟</p>
         </div>
       ) : (
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {quotes.map((quote) => (
-            <Card key={quote.id} className="hover:shadow-lg transition-shadow">
-              <CardContent className="p-6">
-                <div className="space-y-4">
-                  <Quote className="h-8 w-8 text-primary" />
-                  <blockquote className="text-lg font-medium text-foreground leading-relaxed">
+        <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3 animate-fade-in">
+          {quotes.map((quote, index) => (
+            <Card 
+              key={quote.id} 
+              className={`card-hover card-glow bg-card/70 backdrop-blur-sm border border-border/50 rounded-2xl overflow-hidden animate-scale-in`}
+              style={{ animationDelay: `${index * 0.1}s` }}
+            >
+              <CardContent className="p-8">
+                <div className="space-y-6">
+                  <div className="flex items-center justify-between">
+                    <Quote className="h-8 w-8 text-primary" />
+                    <div className="w-2 h-2 rounded-full bg-gradient-primary animate-pulse"></div>
+                  </div>
+                  <blockquote className="text-lg font-serif font-medium text-foreground leading-relaxed">
                     "{quote.content}"
                   </blockquote>
-                  <div className="flex items-center justify-between text-sm text-muted-foreground">
-                    <cite className="font-medium">— {quote.author}</cite>
-                    <time dateTime={quote.created_at}>
+                  <div className="flex items-center justify-between pt-4 border-t border-border/30">
+                    <cite className="font-semibold text-primary bg-gradient-primary bg-clip-text text-transparent">
+                      — {quote.author}
+                    </cite>
+                    <time 
+                      dateTime={quote.created_at}
+                      className="text-sm text-muted-foreground font-medium bg-accent/20 px-3 py-1 rounded-full"
+                    >
                       {new Date(quote.created_at).toLocaleDateString()}
                     </time>
                   </div>
