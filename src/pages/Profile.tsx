@@ -6,6 +6,8 @@ import { useAuth } from '@/hooks/useAuth';
 import { useToast } from '@/hooks/use-toast';
 import { Quote, Trash2, User, Plus } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { EditProfileDialog } from '@/components/EditProfileDialog';
+import { EditQuoteDialog } from '@/components/EditQuoteDialog';
 
 interface UserQuote {
   id: string;
@@ -14,8 +16,15 @@ interface UserQuote {
   created_at: string;
 }
 
+interface UserProfile {
+  display_name: string | null;
+  bio: string | null;
+  avatar_url: string | null;
+}
+
 export function Profile() {
   const [quotes, setQuotes] = useState<UserQuote[]>([]);
+  const [profile, setProfile] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(true);
   const [deletingId, setDeletingId] = useState<string | null>(null);
   const { user } = useAuth();
@@ -23,26 +32,39 @@ export function Profile() {
 
   useEffect(() => {
     if (user) {
-      fetchUserQuotes();
+      fetchUserData();
     }
   }, [user]);
 
-  const fetchUserQuotes = async () => {
+  const fetchUserData = async () => {
     if (!user) return;
 
     try {
-      const { data, error } = await supabase
+      // Fetch quotes
+      const { data: quotesData, error: quotesError } = await supabase
         .from('quotes')
         .select('id, content, author, created_at')
         .eq('user_id', user.id)
         .order('created_at', { ascending: false });
 
-      if (error) throw error;
+      if (quotesError) throw quotesError;
 
-      setQuotes(data || []);
+      // Fetch profile
+      const { data: profileData, error: profileError } = await supabase
+        .from('profiles')
+        .select('display_name, bio, avatar_url')
+        .eq('user_id', user.id)
+        .single();
+
+      if (profileError && profileError.code !== 'PGRST116') {
+        throw profileError;
+      }
+
+      setQuotes(quotesData || []);
+      setProfile(profileData || null);
     } catch (error: any) {
       toast({
-        title: 'Error loading your quotes',
+        title: 'Error loading your data',
         description: error.message,
         variant: 'destructive',
       });
@@ -80,6 +102,16 @@ export function Profile() {
     }
   };
 
+  const handleQuoteUpdate = (updatedQuote: UserQuote) => {
+    setQuotes(quotes.map(quote => 
+      quote.id === updatedQuote.id ? updatedQuote : quote
+    ));
+  };
+
+  const handleProfileUpdate = (updatedProfile: Partial<UserProfile>) => {
+    setProfile(prev => ({ ...prev, ...updatedProfile } as UserProfile));
+  };
+
   if (loading) {
     return (
       <div className="container mx-auto px-4 py-12">
@@ -97,16 +129,43 @@ export function Profile() {
     <div className="container mx-auto px-4 py-12">
       <div className="text-center mb-12 animate-fade-in-up">
         <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-primary mb-6 animate-float">
-          <User className="h-8 w-8 text-white" />
+          {profile?.avatar_url ? (
+            <img 
+              src={profile.avatar_url} 
+              alt="Profile avatar" 
+              className="w-16 h-16 rounded-full object-cover"
+              onError={(e) => {
+                e.currentTarget.style.display = 'none';
+                e.currentTarget.nextElementSibling?.classList.remove('hidden');
+              }}
+            />
+          ) : (
+            <User className="h-8 w-8 text-white" />
+          )}
+          <User className="h-8 w-8 text-white hidden" />
         </div>
         <h1 className="text-5xl font-serif font-bold bg-gradient-primary bg-clip-text text-transparent mb-4">
-          My Quotes Collection
+          {profile?.display_name || 'My Quotes Collection'}
         </h1>
+        {profile?.bio && (
+          <p className="text-lg text-muted-foreground font-medium mb-4 max-w-2xl mx-auto">
+            {profile.bio}
+          </p>
+        )}
         <div className="inline-flex items-center gap-3 bg-card/70 backdrop-blur-sm border border-border/50 rounded-full px-6 py-3 mb-6">
           <div className="w-3 h-3 rounded-full bg-gradient-primary animate-pulse"></div>
           <p className="text-lg text-muted-foreground font-medium">
             {quotes.length} {quotes.length === 1 ? 'quote' : 'quotes'} shared
           </p>
+        </div>
+        <div className="flex gap-3 justify-center mb-6">
+          <EditProfileDialog onProfileUpdate={handleProfileUpdate} />
+          <Link to="/home/submit">
+            <Button className="bg-gradient-primary hover:shadow-glow font-semibold px-8 py-3 rounded-xl transition-all duration-300 transform hover:scale-[1.02]">
+              <Plus className="h-5 w-5 mr-2" />
+              Add New Quote
+            </Button>
+          </Link>
         </div>
         <div className="w-24 h-1 bg-gradient-primary rounded-full mx-auto"></div>
       </div>
@@ -120,7 +179,7 @@ export function Profile() {
           <p className="text-lg text-muted-foreground font-medium mb-8 max-w-md mx-auto">
             Start your journey by sharing your first inspiring quote with the world! ✨
           </p>
-          <Link to="/submit">
+          <Link to="/home/submit">
             <Button className="bg-gradient-primary hover:shadow-glow font-semibold px-8 py-3 rounded-xl transition-all duration-300 transform hover:scale-[1.02]">
               <Plus className="h-5 w-5 mr-2" />
               Share Your First Quote 🚀
@@ -141,19 +200,25 @@ export function Profile() {
                     <Quote className="h-6 w-6 text-primary" />
                     <div className="w-2 h-2 rounded-full bg-gradient-primary animate-pulse"></div>
                   </div>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => handleDelete(quote.id)}
-                    disabled={deletingId === quote.id}
-                    className="opacity-0 group-hover:opacity-100 transition-all duration-300 text-destructive hover:text-white hover:bg-destructive rounded-lg"
-                  >
-                    {deletingId === quote.id ? (
-                      <div className="w-4 h-4 border-2 border-destructive/30 border-t-destructive rounded-full animate-spin"></div>
-                    ) : (
-                      <Trash2 className="h-4 w-4" />
-                    )}
-                  </Button>
+                  <div className="flex gap-2">
+                    <EditQuoteDialog 
+                      quote={quote}
+                      onQuoteUpdate={handleQuoteUpdate}
+                    />
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => handleDelete(quote.id)}
+                      disabled={deletingId === quote.id}
+                      className="opacity-0 group-hover:opacity-100 transition-all duration-300 text-destructive hover:text-white hover:bg-destructive rounded-lg"
+                    >
+                      {deletingId === quote.id ? (
+                        <div className="w-4 h-4 border-2 border-destructive/30 border-t-destructive rounded-full animate-spin"></div>
+                      ) : (
+                        <Trash2 className="h-4 w-4" />
+                      )}
+                    </Button>
+                  </div>
                 </div>
               </CardHeader>
               <CardContent className="pt-0 pb-8">
