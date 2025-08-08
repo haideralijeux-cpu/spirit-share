@@ -9,32 +9,58 @@ import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { Quote, Edit } from 'lucide-react';
 
+// Type definition for quote data structure
 interface QuoteData {
   id: string;
   content: string;
   author: string;
 }
 
+// Props interface for the EditQuoteDialog component
 interface EditQuoteDialogProps {
   quote: QuoteData;
   onQuoteUpdate: (updatedQuote: QuoteData) => void;
 }
 
+/**
+ * EditQuoteDialog component - modal dialog for editing existing quotes
+ * 
+ * Features:
+ * - Pre-populates form with existing quote data
+ * - Real-time form validation
+ * - Secure database updates with user authentication check
+ * - Form reset functionality when dialog is cancelled
+ * - Loading states and error handling
+ * - Optimistic UI updates via callback to parent component
+ */
 export function EditQuoteDialog({ quote, onQuoteUpdate }: EditQuoteDialogProps) {
+  // Dialog state management
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
+  
+  // Form state - initialized with current quote values
   const [content, setContent] = useState(quote.content);
   const [author, setAuthor] = useState(quote.author);
+  
+  // Hooks for authentication and user feedback
   const { user } = useAuth();
   const { toast } = useToast();
 
+  /**
+   * Handle form submission - updates quote in database
+   * Includes validation and security checks
+   */
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    // Basic validation - ensure user is authenticated and fields aren't empty
     if (!user || !content.trim() || !author.trim()) return;
 
     setLoading(true);
 
     try {
+      // Update quote in Supabase database
+      // Double security check: match both quote ID and user ID
       const { error } = await supabase
         .from('quotes')
         .update({
@@ -42,35 +68,45 @@ export function EditQuoteDialog({ quote, onQuoteUpdate }: EditQuoteDialogProps) 
           author: author.trim(),
         })
         .eq('id', quote.id)
-        .eq('user_id', user.id); // Extra security check
+        .eq('user_id', user.id); // Extra security: ensure user owns this quote
 
       if (error) throw error;
 
+      // Create updated quote object for parent component
       const updatedQuote = {
         ...quote,
         content: content.trim(),
         author: author.trim(),
       };
 
+      // Update parent component's state with new data
       onQuoteUpdate(updatedQuote);
       
+      // Show success message to user
       toast({
         title: 'Quote updated successfully! ✨',
         description: 'Your quote has been saved with the new changes.',
       });
 
+      // Close the dialog
       setOpen(false);
     } catch (error) {
+      // Show error message if update fails
       toast({
         title: 'Failed to update quote',
         description: error instanceof Error ? error.message : 'An unexpected error occurred',
         variant: 'destructive',
       });
     } finally {
+      // Always reset loading state
       setLoading(false);
     }
   };
 
+  /**
+   * Reset form fields to original quote values
+   * Called when dialog is cancelled or closed
+   */
   const resetForm = () => {
     setContent(quote.content);
     setAuthor(quote.author);
@@ -81,11 +117,13 @@ export function EditQuoteDialog({ quote, onQuoteUpdate }: EditQuoteDialogProps) 
       open={open} 
       onOpenChange={(newOpen) => {
         setOpen(newOpen);
+        // Reset form to original values when dialog is closed/cancelled
         if (!newOpen) {
           resetForm();
         }
       }}
     >
+      {/* Trigger button - only visible on hover over quote card */}
       <DialogTrigger asChild>
         <Button
           variant="ghost"
@@ -95,6 +133,8 @@ export function EditQuoteDialog({ quote, onQuoteUpdate }: EditQuoteDialogProps) 
           <Edit className="h-4 w-4" />
         </Button>
       </DialogTrigger>
+      
+      {/* Dialog content with backdrop blur effect */}
       <DialogContent className="sm:max-w-[600px] bg-card/95 backdrop-blur-sm border border-border/50 rounded-2xl">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-3 text-2xl font-serif font-bold">
@@ -105,7 +145,9 @@ export function EditQuoteDialog({ quote, onQuoteUpdate }: EditQuoteDialogProps) 
           </DialogTitle>
         </DialogHeader>
         
+        {/* Edit form with validation */}
         <form onSubmit={handleSubmit} className="space-y-6 mt-6">
+          {/* Quote content field */}
           <div className="space-y-2">
             <Label htmlFor="content" className="font-semibold text-foreground">
               Quote Content
@@ -121,6 +163,7 @@ export function EditQuoteDialog({ quote, onQuoteUpdate }: EditQuoteDialogProps) 
             />
           </div>
           
+          {/* Author field */}
           <div className="space-y-2">
             <Label htmlFor="author" className="font-semibold text-foreground">
               Author
@@ -135,7 +178,9 @@ export function EditQuoteDialog({ quote, onQuoteUpdate }: EditQuoteDialogProps) 
             />
           </div>
           
+          {/* Form action buttons */}
           <div className="flex gap-3 pt-4">
+            {/* Cancel button - closes dialog without saving */}
             <Button
               type="button"
               variant="outline"
@@ -144,11 +189,14 @@ export function EditQuoteDialog({ quote, onQuoteUpdate }: EditQuoteDialogProps) 
             >
               Cancel
             </Button>
+            
+            {/* Submit button - disabled during loading or if form is invalid */}
             <Button
               type="submit"
               disabled={loading || !content.trim() || !author.trim()}
               className="flex-1 bg-gradient-primary hover:shadow-glow font-semibold rounded-xl transition-all duration-300 transform hover:scale-[1.02]"
             >
+              {/* Show spinner during loading */}
               {loading ? (
                 <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin mr-2"></div>
               ) : null}

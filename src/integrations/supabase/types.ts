@@ -1,3 +1,11 @@
+/**
+ * TypeScript definitions for Supabase database schema
+ * 
+ * This file is auto-generated from the database schema and provides
+ * type safety for all database operations throughout the application.
+ */
+
+// JSON type definition for Supabase JSONB fields
 export type Json =
   | string
   | number
@@ -6,70 +14,78 @@ export type Json =
   | { [key: string]: Json | undefined }
   | Json[]
 
+// Main database schema type definition
 export type Database = {
-  // Allows to automatically instanciate createClient with right options
-  // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
+  // Internal Supabase metadata - used for client configuration
   __InternalSupabase: {
     PostgrestVersion: "13.0.4"
   }
   public: {
     Tables: {
+      // User profiles table - extends auth.users with additional info
       profiles: {
+        // Shape of data when reading from database
         Row: {
-          avatar_url: string | null
-          bio: string | null
-          created_at: string
-          display_name: string | null
-          id: string
-          updated_at: string
-          user_id: string
+          avatar_url: string | null    // URL to user's profile picture
+          bio: string | null           // User's bio/description
+          created_at: string           // When profile was created
+          display_name: string | null  // User's chosen display name
+          id: string                   // Profile UUID (primary key)
+          updated_at: string           // When profile was last updated
+          user_id: string              // Foreign key to auth.users
         }
+        // Shape of data when inserting new records
         Insert: {
           avatar_url?: string | null
           bio?: string | null
-          created_at?: string
+          created_at?: string          // Auto-generated if not provided
           display_name?: string | null
-          id?: string
-          updated_at?: string
-          user_id: string
+          id?: string                  // Auto-generated if not provided
+          updated_at?: string          // Auto-generated if not provided
+          user_id: string              // Required field
         }
+        // Shape of data when updating existing records
         Update: {
           avatar_url?: string | null
           bio?: string | null
           created_at?: string
           display_name?: string | null
           id?: string
-          updated_at?: string
+          updated_at?: string          // Auto-updated by trigger
           user_id?: string
         }
-        Relationships: []
+        Relationships: []              // No foreign key relationships defined
       }
+      // Quotes table - stores all quotes shared by users
       quotes: {
+        // Shape of data when reading from database
         Row: {
-          author: string
-          content: string
-          created_at: string
-          id: string
-          updated_at: string
-          user_id: string
+          author: string               // Quote author name
+          content: string              // The quote text
+          created_at: string           // When quote was created
+          id: string                   // Quote UUID (primary key)
+          updated_at: string           // When quote was last updated
+          user_id: string              // Foreign key to auth.users (who submitted it)
         }
+        // Shape of data when inserting new quotes
         Insert: {
-          author: string
-          content: string
-          created_at?: string
-          id?: string
-          updated_at?: string
-          user_id: string
+          author: string               // Required field
+          content: string              // Required field
+          created_at?: string          // Auto-generated if not provided
+          id?: string                  // Auto-generated if not provided
+          updated_at?: string          // Auto-generated if not provided
+          user_id: string              // Required field
         }
+        // Shape of data when updating existing quotes
         Update: {
           author?: string
           content?: string
           created_at?: string
           id?: string
-          updated_at?: string
+          updated_at?: string          // Auto-updated by trigger
           user_id?: string
         }
-        Relationships: []
+        Relationships: []              // No foreign key relationships defined
       }
     }
     Views: {

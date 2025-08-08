@@ -2,16 +2,28 @@
 import { createClient } from '@supabase/supabase-js';
 import type { Database } from './types';
 
+// Supabase project configuration
+// These values are safe to expose in the client since they're public keys
 const SUPABASE_URL = "https://hqanfbnojuvszhitodyt.supabase.co";
 const SUPABASE_PUBLISHABLE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhxYW5mYm5vanV2c3poaXRvZHl0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQ2NDY0NjgsImV4cCI6MjA3MDIyMjQ2OH0.gXnL4LTvQuaHJgCnGZ9IZmxhMiM3nRcpDPX9xzlCIZY";
 
 // Import the supabase client like this:
 // import { supabase } from "@/integrations/supabase/client";
 
+/**
+ * Configured Supabase client instance
+ * 
+ * This client provides:
+ * - Type-safe database operations using the Database schema
+ * - Automatic authentication token management
+ * - Persistent user sessions across browser refreshes
+ * - LocalStorage-based session persistence
+ * - Automatic token refresh when needed
+ */
 export const supabase = createClient<Database>(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, {
   auth: {
-    storage: localStorage,
-    persistSession: true,
-    autoRefreshToken: true,
+    storage: localStorage,        // Store auth tokens in browser localStorage
+    persistSession: true,        // Keep user logged in across browser sessions
+    autoRefreshToken: true,      // Automatically refresh expired tokens
   }
 });

@@ -10,17 +10,34 @@ import { useAuth } from '@/hooks/useAuth';
 import { useToast } from '@/hooks/use-toast';
 import { Quote, Sparkles, Send } from 'lucide-react';
 
+/**
+ * Submit page component - allows users to add new quotes to the community
+ * 
+ * Features:
+ * - Form validation to ensure required fields are filled
+ * - Character count display with visual feedback
+ * - Real-time form state management
+ * - Automatic redirect to home page after successful submission
+ * - Error handling with user-friendly messages
+ */
 export function Submit() {
+  // Form state management
   const [content, setContent] = useState('');
   const [author, setAuthor] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  
+  // Hooks for authentication, navigation, and user feedback
   const { user } = useAuth();
   const { toast } = useToast();
   const navigate = useNavigate();
 
+  /**
+   * Handle form submission - validates input and saves quote to database
+   */
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
+    // Check if user is authenticated before allowing submission
     if (!user) {
       toast({
         title: 'Authentication required',
@@ -33,32 +50,37 @@ export function Submit() {
     setIsSubmitting(true);
 
     try {
+      // Insert new quote into Supabase database
+      // The user_id is automatically associated with the current user
       const { error } = await supabase.from('quotes').insert({
-        content: content.trim(),
-        author: author.trim(),
-        user_id: user.id,
+        content: content.trim(), // Remove extra whitespace
+        author: author.trim(),   // Remove extra whitespace
+        user_id: user.id,        // Associate quote with current user
       });
 
       if (error) throw error;
 
+      // Show success message to user
       toast({
         title: 'Quote submitted! ✨',
         description: 'Your inspirational quote has been shared with the community.',
       });
 
-      // Reset form
+      // Clear the form after successful submission
       setContent('');
       setAuthor('');
       
-      // Navigate to home to see the new quote
+      // Redirect user to home page to see their new quote
       navigate('/home');
     } catch (error) {
+      // Show error message if submission fails
       toast({
         title: 'Failed to submit quote',
         description: error instanceof Error ? error.message : 'An unexpected error occurred',
         variant: 'destructive',
       });
     } finally {
+      // Always reset submitting state, whether success or failure
       setIsSubmitting(false);
     }
   };

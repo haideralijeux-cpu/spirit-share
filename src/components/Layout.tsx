@@ -3,10 +3,22 @@ import { Button } from '@/components/ui/button';
 import { useAuth } from '@/hooks/useAuth';
 import { Home, Plus, User, LogOut, Quote } from 'lucide-react';
 
+/**
+ * Layout component - provides the main app structure for authenticated users
+ * 
+ * Features:
+ * - Navigation header with app branding
+ * - Desktop and mobile navigation menus
+ * - User authentication checks and redirects
+ * - Loading states during authentication
+ * - Sign out functionality
+ * - Responsive design with mobile-specific navigation
+ */
 export function Layout() {
   const { user, signOut, loading } = useAuth();
   const location = useLocation();
 
+  // Show loading spinner while checking authentication status
   if (loading) {
     return (
       <div className="min-h-screen bg-gradient-background flex items-center justify-center">
@@ -20,10 +32,12 @@ export function Layout() {
     );
   }
 
+  // Redirect to landing page if user is not authenticated
   if (!user) {
     return <Navigate to="/" replace />;
   }
 
+  // Define main navigation items with icons
   const navigation = [
     { name: 'Home', href: '/home', icon: Home },
     { name: 'Submit', href: '/home/submit', icon: Plus },
@@ -32,9 +46,11 @@ export function Layout() {
 
   return (
     <div className="min-h-screen bg-gradient-background">
+      {/* Main navigation header - sticky at top with backdrop blur */}
       <header className="border-b border-border/50 bg-card/70 backdrop-blur-sm sticky top-0 z-50">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
+            {/* App logo and branding */}
             <Link 
               to="/home"
               className="flex items-center space-x-3 group"
@@ -47,6 +63,7 @@ export function Layout() {
               </span>
             </Link>
             
+            {/* Desktop navigation menu - hidden on mobile */}
             <nav className="hidden md:flex items-center space-x-2">
               {navigation.map((item) => {
                 const Icon = item.icon;
@@ -68,6 +85,7 @@ export function Layout() {
               })}
             </nav>
 
+            {/* Sign out button */}
             <Button 
               variant="outline" 
               size="sm" 
@@ -79,7 +97,7 @@ export function Layout() {
             </Button>
           </div>
 
-          {/* Mobile Navigation */}
+          {/* Mobile Navigation - only visible on small screens */}
           <nav className="md:hidden mt-4 flex justify-center space-x-8 bg-card/50 backdrop-blur-sm rounded-xl p-2 border border-border/50">
             {navigation.map((item) => {
               const Icon = item.icon;
@@ -103,6 +121,7 @@ export function Layout() {
         </div>
       </header>
 
+      {/* Main content area where child routes are rendered */}
       <main className="animate-fade-in">
         <Outlet />
       </main>
