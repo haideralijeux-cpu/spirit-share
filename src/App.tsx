@@ -24,8 +24,8 @@ const App = () => (
             <Route path="/" element={<Landing />} />
             <Route path="/home" element={<Layout />}>
               <Route index element={<Home />} />
-              <Route path="/submit" element={<Submit />} />
-              <Route path="/profile" element={<Profile />} />
+              <Route path="submit" element={<Submit />} />
+              <Route path="profile" element={<Profile />} />
             </Route>
             <Route path="*" element={<NotFound />} />
           </Routes>

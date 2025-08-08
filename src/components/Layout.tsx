@@ -26,8 +26,8 @@ export function Layout() {
 
   const navigation = [
     { name: 'Home', href: '/home', icon: Home },
-    { name: 'Submit', href: '/submit', icon: Plus },
-    { name: 'Profile', href: '/profile', icon: User },
+    { name: 'Submit', href: '/home/submit', icon: Plus },
+    { name: 'Profile', href: '/home/profile', icon: User },
   ];
 
   return (
