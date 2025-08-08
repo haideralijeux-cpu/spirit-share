@@ -70,26 +70,46 @@ export function Landing() {
 
   return (
     <div className="min-h-screen relative overflow-hidden">
-      {/* Beautiful animated background */}
-      <div className="absolute inset-0 bg-gradient-background">
-        <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-accent/5"></div>
+      {/* Stunning animated background with geometric patterns */}
+      <div className="absolute inset-0">
+        {/* Base gradient */}
+        <div className="absolute inset-0 bg-gradient-to-br from-blue-50 via-cyan-50 to-sky-100"></div>
+        
+        {/* Animated geometric shapes */}
+        <div className="absolute inset-0">
+          {/* Large floating circles */}
+          <div className="absolute top-20 left-10 w-64 h-64 bg-gradient-to-br from-blue-200/30 to-cyan-200/30 rounded-full blur-3xl animate-float"></div>
+          <div className="absolute top-40 right-20 w-96 h-96 bg-gradient-to-br from-sky-200/20 to-blue-300/20 rounded-full blur-3xl animate-float" style={{ animationDelay: '2s' }}></div>
+          <div className="absolute bottom-20 left-1/4 w-80 h-80 bg-gradient-to-br from-cyan-200/25 to-teal-200/25 rounded-full blur-3xl animate-float" style={{ animationDelay: '4s' }}></div>
+          
+          {/* Mesh gradient overlay */}
+          <div className="absolute inset-0 bg-gradient-to-tr from-blue-100/50 via-transparent to-cyan-100/50"></div>
+          
+          {/* Subtle grid pattern */}
+          <div className="absolute inset-0 opacity-5">
+            <div className="absolute inset-0" style={{ 
+              backgroundImage: `radial-gradient(circle at 1px 1px, hsl(210 90% 65%) 1px, transparent 0)`,
+              backgroundSize: '40px 40px'
+            }}></div>
+          </div>
+        </div>
       </div>
       
       {/* Floating decoration elements */}
-      <div className="absolute top-20 left-10 text-primary/20 animate-float">
+      <div className="absolute top-20 left-10 text-primary/30 animate-float z-10">
         <Quote className="h-8 w-8" />
       </div>
-      <div className="absolute top-40 right-20 text-accent/30 animate-float" style={{ animationDelay: '2s' }}>
+      <div className="absolute top-40 right-20 text-cyan-500/40 animate-float z-10" style={{ animationDelay: '2s' }}>
         <Sparkles className="h-6 w-6" />
       </div>
-      <div className="absolute bottom-32 left-16 text-warning/25 animate-float" style={{ animationDelay: '4s' }}>
+      <div className="absolute bottom-32 left-16 text-sky-500/35 animate-float z-10" style={{ animationDelay: '4s' }}>
         <Heart className="h-7 w-7" />
       </div>
-      <div className="absolute bottom-20 right-16 text-success/30 animate-float" style={{ animationDelay: '1s' }}>
+      <div className="absolute bottom-20 right-16 text-blue-400/40 animate-float z-10" style={{ animationDelay: '1s' }}>
         <Star className="h-5 w-5" />
       </div>
 
-      <div className="relative min-h-screen">
+      <div className="relative min-h-screen z-20">
         {!showAuth ? (
           // Landing Hero Section
           <div className="container mx-auto px-4 py-20">
