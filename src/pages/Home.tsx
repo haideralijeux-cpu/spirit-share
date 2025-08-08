@@ -27,11 +27,6 @@ export function Home() {
   const [loading, setLoading] = useState(true);
   const { toast } = useToast();
 
-  // Load quotes when component mounts
-  useEffect(() => {
-    fetchQuotes();
-  }, [fetchQuotes]);
-
   /**
    * Fetch all quotes from Supabase database
    * Uses useCallback to prevent unnecessary re-renders and infinite loops
@@ -60,6 +55,11 @@ export function Home() {
       setLoading(false);
     }
   }, [toast]);
+
+  // Load quotes when component mounts
+  useEffect(() => {
+    fetchQuotes();
+  }, [fetchQuotes]);
 
   // Show loading spinner while fetching quotes from database
   if (loading) {

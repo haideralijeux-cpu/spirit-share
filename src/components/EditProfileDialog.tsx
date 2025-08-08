@@ -30,12 +30,6 @@ export function EditProfileDialog({ onProfileUpdate }: EditProfileDialogProps) {
   const { user } = useAuth();
   const { toast } = useToast();
 
-  useEffect(() => {
-    if (open && user) {
-      fetchProfile();
-    }
-  }, [open, user, fetchProfile]);
-
   const fetchProfile = useCallback(async () => {
     if (!user) return;
 
@@ -65,6 +59,12 @@ export function EditProfileDialog({ onProfileUpdate }: EditProfileDialogProps) {
       });
     }
   }, [user, toast]);
+
+  useEffect(() => {
+    if (open && user) {
+      fetchProfile();
+    }
+  }, [open, user, fetchProfile]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

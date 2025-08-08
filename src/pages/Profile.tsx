@@ -30,12 +30,6 @@ export function Profile() {
   const { user } = useAuth();
   const { toast } = useToast();
 
-  useEffect(() => {
-    if (user) {
-      fetchUserData();
-    }
-  }, [user, fetchUserData]);
-
   const fetchUserData = useCallback(async () => {
     if (!user) return;
 
@@ -72,6 +66,12 @@ export function Profile() {
       setLoading(false);
     }
   }, [user, toast]);
+
+  useEffect(() => {
+    if (user) {
+      fetchUserData();
+    }
+  }, [user, fetchUserData]);
 
   const handleDelete = async (quoteId: string) => {
     setDeletingId(quoteId);
