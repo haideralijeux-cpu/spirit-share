@@ -157,6 +157,10 @@
     animation: glow 2s ease-in-out infinite alternate;
   }
 
+  .animate-fade-in {
+    animation: fadeIn 0.6s ease-out forwards;
+  }
+
   .animate-fade-in-up {
     animation: fadeInUp 0.6s ease-out forwards;
   }
@@ -193,6 +197,15 @@
 @keyframes glow {
   from { box-shadow: 0 0 10px hsl(var(--primary) / 0.3); }
   to { box-shadow: 0 0 20px hsl(var(--primary) / 0.6); }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 @keyframes fadeInUp {
