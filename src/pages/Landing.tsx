@@ -269,17 +269,27 @@ export function Landing() {
                         <Button 
                           type="submit" 
                           size="lg"
-                          className="w-full h-16 bg-gradient-primary hover:shadow-glow font-semibold text-lg rounded-xl transition-all duration-300 transform hover:scale-[1.02]" 
+                          className="relative w-full h-16 bg-gradient-cosmic hover:animate-cosmic-glow font-bold text-xl text-white rounded-2xl transition-all duration-500 transform hover:scale-105 overflow-hidden group shadow-large animate-button-pulse"
+                          style={{ 
+                            backgroundSize: '400% 400%',
+                            animation: 'rainbow-shift 4s ease-in-out infinite, button-pulse 2s ease-in-out infinite'
+                          }}
                           disabled={isLoading}
                         >
-                          {isLoading ? (
-                            <div className="flex items-center gap-2">
-                              <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
-                              Signing in...
-                            </div>
-                          ) : (
-                            'Sign In ✨'
-                          )}
+                          <div className="absolute inset-0 bg-gradient-cosmic opacity-0 group-hover:opacity-100 transition-opacity duration-500" style={{ backgroundSize: '400% 400%', animation: 'rainbow-shift 2s ease-in-out infinite' }}></div>
+                          <span className="relative z-10 flex items-center justify-center gap-2">
+                            {isLoading ? (
+                              <div className="flex items-center gap-3">
+                                <div className="w-5 h-5 border-3 border-white/30 border-t-white rounded-full animate-spin"></div>
+                                <span className="animate-pulse">Signing in...</span>
+                              </div>
+                            ) : (
+                              <>
+                                <span className="animate-pulse">Sign In</span>
+                                <span className="text-2xl animate-bounce">✨</span>
+                              </>
+                            )}
+                          </span>
                         </Button>
                       </form>
                     </CardContent>

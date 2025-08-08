@@ -84,7 +84,10 @@ export default {
 				'gradient-primary': 'var(--gradient-primary)',
 				'gradient-secondary': 'var(--gradient-secondary)',
 				'gradient-accent': 'var(--gradient-accent)',
-				'gradient-background': 'var(--gradient-background)'
+				'gradient-background': 'var(--gradient-background)',
+				'gradient-rainbow': 'var(--gradient-rainbow)',
+				'gradient-cosmic': 'var(--gradient-cosmic)',
+				'gradient-sunset': 'var(--gradient-sunset)'
 			},
 			boxShadow: {
 				'glow': 'var(--shadow-glow)',
@@ -127,6 +130,36 @@ export default {
 				'glow': {
 					'0%': { boxShadow: '0 0 10px hsl(var(--primary) / 0.3)' },
 					'100%': { boxShadow: '0 0 20px hsl(var(--primary) / 0.6)' }
+				},
+				'rainbow-shift': {
+					'0%': { backgroundPosition: '0% 50%' },
+					'25%': { backgroundPosition: '100% 0%' },
+					'50%': { backgroundPosition: '100% 100%' },
+					'75%': { backgroundPosition: '0% 100%' },
+					'100%': { backgroundPosition: '0% 50%' }
+				},
+				'button-pulse': {
+					'0%': { transform: 'scale(1)', boxShadow: '0 0 0 0 hsl(var(--primary) / 0.7)' },
+					'50%': { transform: 'scale(1.02)', boxShadow: '0 0 0 10px hsl(var(--primary) / 0)' },
+					'100%': { transform: 'scale(1)', boxShadow: '0 0 0 0 hsl(var(--primary) / 0)' }
+				},
+				'cosmic-glow': {
+					'0%': { 
+						boxShadow: '0 0 20px hsl(240 100% 70% / 0.3), 0 0 40px hsl(280 100% 80% / 0.2)',
+						filter: 'hue-rotate(0deg)'
+					},
+					'33%': { 
+						boxShadow: '0 0 30px hsl(280 100% 80% / 0.4), 0 0 60px hsl(320 100% 75% / 0.3)',
+						filter: 'hue-rotate(120deg)'
+					},
+					'66%': { 
+						boxShadow: '0 0 25px hsl(320 100% 75% / 0.3), 0 0 50px hsl(240 100% 70% / 0.2)',
+						filter: 'hue-rotate(240deg)'
+					},
+					'100%': { 
+						boxShadow: '0 0 20px hsl(240 100% 70% / 0.3), 0 0 40px hsl(280 100% 80% / 0.2)',
+						filter: 'hue-rotate(360deg)'
+					}
 				}
 			},
 			animation: {
@@ -136,7 +169,10 @@ export default {
 				'fade-in-up': 'fade-in-up 0.6s ease-out',
 				'scale-in': 'scale-in 0.4s ease-out',
 				'float': 'float 6s ease-in-out infinite',
-				'glow': 'glow 2s ease-in-out infinite alternate'
+				'glow': 'glow 2s ease-in-out infinite alternate',
+				'rainbow-shift': 'rainbow-shift 4s ease-in-out infinite',
+				'button-pulse': 'button-pulse 2s ease-in-out infinite',
+				'cosmic-glow': 'cosmic-glow 3s ease-in-out infinite'
 			}
 		}
 	},
