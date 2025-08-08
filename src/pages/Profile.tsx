@@ -194,26 +194,20 @@ export function Profile() {
                 <h2 className="text-2xl font-serif font-bold text-foreground mb-2">
                   {profile?.display_name || user?.email || 'QuickQuotes User'}
                 </h2>
-                <p className="text-muted-foreground font-medium">
-                  {user?.email}
-                </p>
+                {profile?.display_name && (
+                  <p className="text-muted-foreground font-medium mb-2">
+                    {user?.email}
+                  </p>
+                )}
+                {profile?.bio && (
+                  <p className="text-foreground leading-relaxed">
+                    {profile.bio}
+                  </p>
+                )}
               </div>
               <EditProfileDialog onProfileUpdate={handleProfileUpdate} />
             </div>
           </CardHeader>
-          {profile?.bio && (
-            <CardContent className="pt-0">
-              <div className="bg-accent/20 rounded-xl p-4 border border-border/30">
-                <h3 className="font-semibold text-foreground mb-2 flex items-center gap-2">
-                  <Quote className="h-4 w-4 text-primary" />
-                  About Me
-                </h3>
-                <p className="text-foreground leading-relaxed">
-                  {profile.bio}
-                </p>
-              </div>
-            </CardContent>
-          )}
         </Card>
       </div>
       
