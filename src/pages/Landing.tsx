@@ -122,7 +122,7 @@ export function Landing() {
           <div className="container mx-auto px-4 py-20">
             <div className="text-center mb-16 animate-fade-in-up">
               <div className="inline-flex items-center justify-center w-28 h-28 rounded-full bg-gradient-primary mb-8 animate-glow card-hover">
-                <Quote className="h-14 w-14 text-white animate-pulse-slow" />
+                <Library className="h-14 w-14 text-white animate-pulse-slow" />
               </div>
               <h1 className="text-8xl font-serif font-bold text-gradient-animate mb-6 animate-bounce-in">
                 QuickQuotes
@@ -201,7 +201,7 @@ export function Landing() {
                   ← Back to Home
                 </Button>
                 <div className="inline-flex items-center justify-center w-24 h-24 rounded-full bg-gradient-primary mb-8 animate-glow card-hover">
-                  <Quote className="h-12 w-12 text-white animate-pulse-slow" />
+                  <Library className="h-12 w-12 text-white animate-pulse-slow" />
                 </div>
                 <h2 className="text-5xl font-serif font-bold text-gradient-animate mb-4 animate-bounce-in">
                   Welcome to QuickQuotes
