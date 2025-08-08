@@ -21,11 +21,11 @@ export function Layout() {
   }
 
   if (!user) {
-    return <Navigate to="/auth" replace />;
+    return <Navigate to="/" replace />;
   }
 
   const navigation = [
-    { name: 'Home', href: '/', icon: Home },
+    { name: 'Home', href: '/home', icon: Home },
     { name: 'Submit', href: '/submit', icon: Plus },
     { name: 'Profile', href: '/profile', icon: User },
   ];
@@ -36,7 +36,7 @@ export function Layout() {
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <Link 
-              to="/" 
+              to="/home"
               className="flex items-center space-x-3 group"
             >
               <div className="w-10 h-10 rounded-full bg-gradient-primary flex items-center justify-center group-hover:shadow-glow transition-all duration-300">
