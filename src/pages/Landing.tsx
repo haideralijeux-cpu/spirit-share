@@ -7,7 +7,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useAuth } from '@/hooks/useAuth';
 import { useToast } from '@/hooks/use-toast';
-import { Quote, Sparkles, Heart, Star, Users, BookOpen, Zap, ArrowRight, Edit3, Wand2, Palette } from 'lucide-react';
+import { Quote, Sparkles, Heart, Star, Globe, Library, Zap, ArrowRight, PenTool, Wand2, Palette } from 'lucide-react';
 
 export function Landing() {
   const [email, setEmail] = useState('');
@@ -110,7 +110,7 @@ export function Landing() {
         <Star className="h-5 w-5" />
       </div>
       <div className="absolute top-1/2 left-20 text-fuchsia-400/40 animate-pulse-slow z-10">
-        <Edit3 className="h-6 w-6" />
+        <PenTool className="h-6 w-6" />
       </div>
       <div className="absolute top-1/3 right-10 text-purple-500/35 animate-float z-10">
         <Wand2 className="h-7 w-7" />
@@ -156,7 +156,7 @@ export function Landing() {
             <div className="grid md:grid-cols-3 gap-10 max-w-6xl mx-auto">
               <Card className="card-hover card-glow bg-card/80 backdrop-blur-sm border border-border/50 rounded-3xl text-center p-8 animate-fade-in-left" style={{ animationDelay: '0.2s' }}>
                 <div className="inline-flex items-center justify-center w-18 h-18 rounded-full bg-gradient-accent mb-8 mx-auto animate-pulse-slow">
-                  <Users className="h-10 w-10 text-accent-foreground" />
+                  <Globe className="h-10 w-10 text-accent-foreground" />
                 </div>
                 <h3 className="text-2xl font-serif font-bold text-foreground mb-6 text-shimmer">Community Driven</h3>
                 <p className="text-muted-foreground text-lg leading-relaxed">Join thousands of quote lovers sharing wisdom and inspiration in our vibrant community</p>
@@ -164,7 +164,7 @@ export function Landing() {
 
               <Card className="card-hover card-glow bg-card/80 backdrop-blur-sm border border-border/50 rounded-3xl text-center p-8 animate-fade-in-up" style={{ animationDelay: '0.4s' }}>
                 <div className="inline-flex items-center justify-center w-18 h-18 rounded-full bg-gradient-primary mb-8 mx-auto animate-glow">
-                  <BookOpen className="h-10 w-10 text-white" />
+                  <Library className="h-10 w-10 text-white" />
                 </div>
                 <h3 className="text-2xl font-serif font-bold text-foreground mb-6 text-shimmer">Beautiful Gallery</h3>
                 <p className="text-muted-foreground text-lg leading-relaxed">Browse stunning collections of quotes in our responsive, beautifully designed gallery</p>
@@ -172,7 +172,7 @@ export function Landing() {
 
               <Card className="card-hover card-glow bg-card/80 backdrop-blur-sm border border-border/50 rounded-3xl text-center p-8 animate-fade-in-right" style={{ animationDelay: '0.6s' }}>
                 <div className="inline-flex items-center justify-center w-18 h-18 rounded-full bg-gradient-secondary mb-8 mx-auto animate-bounce-in">
-                  <Edit3 className="h-10 w-10 text-secondary-foreground" />
+                  <PenTool className="h-10 w-10 text-secondary-foreground" />
                 </div>
                 <h3 className="text-2xl font-serif font-bold text-foreground mb-6 text-shimmer">Edit & Share</h3>
                 <p className="text-muted-foreground text-lg leading-relaxed">Create, edit, and share your favorite quotes with our intuitive editing interface</p>
