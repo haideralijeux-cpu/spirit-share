@@ -62,11 +62,6 @@
     --gradient-secondary: linear-gradient(135deg, hsl(320 85% 95%), hsl(285 85% 96%));
     --gradient-accent: linear-gradient(135deg, hsl(310 84% 92%), hsl(300 84% 94%));
     --gradient-background: linear-gradient(135deg, hsl(290 60% 97%), hsl(320 100% 98%));
-    
-    /* Unique button gradients */
-    --gradient-rainbow: linear-gradient(45deg, hsl(280 90% 65%), hsl(320 90% 70%), hsl(260 90% 75%), hsl(340 90% 68%));
-    --gradient-cosmic: linear-gradient(135deg, hsl(240 100% 70%), hsl(280 100% 80%), hsl(320 100% 75%));
-    --gradient-sunset: linear-gradient(135deg, hsl(15 100% 70%), hsl(45 100% 65%), hsl(330 100% 75%));
 
     /* Shadows for depth */
     --shadow-sm: 0 2px 4px hsl(285 60% 88% / 0.3);
@@ -127,11 +122,6 @@
     --gradient-secondary: linear-gradient(135deg, hsl(285 28% 17%), hsl(285 28% 20%));
     --gradient-accent: linear-gradient(135deg, hsl(285 28% 17%), hsl(285 28% 22%));
     --gradient-background: linear-gradient(135deg, hsl(285 85% 6%), hsl(280 85% 8%));
-    
-    /* Dark mode unique button gradients */
-    --gradient-rainbow: linear-gradient(45deg, hsl(280 90% 70%), hsl(320 90% 75%), hsl(260 90% 80%), hsl(340 90% 73%));
-    --gradient-cosmic: linear-gradient(135deg, hsl(240 100% 75%), hsl(280 100% 85%), hsl(320 100% 80%));
-    --gradient-sunset: linear-gradient(135deg, hsl(15 100% 75%), hsl(45 100% 70%), hsl(330 100% 80%));
 
     --shadow-sm: 0 2px 4px hsl(285 85% 6% / 0.5);
     --shadow-md: 0 4px 12px hsl(285 85% 6% / 0.6);
@@ -326,38 +316,4 @@
   0% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }
   100% { background-position: 0% 50%; }
-}
-
-/* Enhanced button animations */
-@keyframes rainbow-shift {
-  0% { background-position: 0% 50%; }
-  25% { background-position: 100% 0%; }
-  50% { background-position: 100% 100%; }
-  75% { background-position: 0% 100%; }
-  100% { background-position: 0% 50%; }
-}
-
-@keyframes button-pulse {
-  0% { transform: scale(1); box-shadow: 0 0 0 0 hsl(var(--primary) / 0.7); }
-  50% { transform: scale(1.02); box-shadow: 0 0 0 10px hsl(var(--primary) / 0); }
-  100% { transform: scale(1); box-shadow: 0 0 0 0 hsl(var(--primary) / 0); }
-}
-
-@keyframes cosmic-glow {
-  0% { 
-    box-shadow: 0 0 20px hsl(240 100% 70% / 0.3), 0 0 40px hsl(280 100% 80% / 0.2); 
-    filter: hue-rotate(0deg);
-  }
-  33% { 
-    box-shadow: 0 0 30px hsl(280 100% 80% / 0.4), 0 0 60px hsl(320 100% 75% / 0.3); 
-    filter: hue-rotate(120deg);
-  }
-  66% { 
-    box-shadow: 0 0 25px hsl(320 100% 75% / 0.3), 0 0 50px hsl(240 100% 70% / 0.2); 
-    filter: hue-rotate(240deg);
-  }
-  100% { 
-    box-shadow: 0 0 20px hsl(240 100% 70% / 0.3), 0 0 40px hsl(280 100% 80% / 0.2); 
-    filter: hue-rotate(360deg);
-  }
 }
