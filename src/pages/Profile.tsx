@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { supabase } from '@/integrations/supabase/client';
@@ -34,9 +34,9 @@ export function Profile() {
     if (user) {
       fetchUserData();
     }
-  }, [user]);
+  }, [user, fetchUserData]);
 
-  const fetchUserData = async () => {
+  const fetchUserData = useCallback(async () => {
     if (!user) return;
 
     try {
@@ -62,16 +62,16 @@ export function Profile() {
 
       setQuotes(quotesData || []);
       setProfile(profileData || null);
-    } catch (error: any) {
+    } catch (error) {
       toast({
         title: 'Error loading your data',
-        description: error.message,
+        description: error instanceof Error ? error.message : 'An unexpected error occurred',
         variant: 'destructive',
       });
     } finally {
       setLoading(false);
     }
-  };
+  }, [user, toast]);
 
   const handleDelete = async (quoteId: string) => {
     setDeletingId(quoteId);
@@ -91,10 +91,10 @@ export function Profile() {
         title: 'Quote deleted ✨',
         description: 'Your quote has been removed successfully.',
       });
-    } catch (error: any) {
+    } catch (error) {
       toast({
         title: 'Failed to delete quote',
-        description: error.message,
+        description: error instanceof Error ? error.message : 'An unexpected error occurred',
         variant: 'destructive',
       });
     } finally {

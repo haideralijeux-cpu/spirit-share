@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -34,9 +34,9 @@ export function EditProfileDialog({ onProfileUpdate }: EditProfileDialogProps) {
     if (open && user) {
       fetchProfile();
     }
-  }, [open, user]);
+  }, [open, user, fetchProfile]);
 
-  const fetchProfile = async () => {
+  const fetchProfile = useCallback(async () => {
     if (!user) return;
 
     try {
@@ -57,14 +57,14 @@ export function EditProfileDialog({ onProfileUpdate }: EditProfileDialogProps) {
           avatar_url: data.avatar_url || '',
         });
       }
-    } catch (error: any) {
+    } catch (error) {
       toast({
         title: 'Error loading profile',
-        description: error.message,
+        description: error instanceof Error ? error.message : 'An unexpected error occurred',
         variant: 'destructive',
       });
     }
-  };
+  }, [user, toast]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -93,10 +93,10 @@ export function EditProfileDialog({ onProfileUpdate }: EditProfileDialogProps) {
 
       onProfileUpdate?.(profile);
       setOpen(false);
-    } catch (error: any) {
+    } catch (error) {
       toast({
         title: 'Failed to update profile',
-        description: error.message,
+        description: error instanceof Error ? error.message : 'An unexpected error occurred',
         variant: 'destructive',
       });
     } finally {

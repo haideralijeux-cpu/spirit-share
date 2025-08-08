@@ -51,11 +51,11 @@ export function Submit() {
       setAuthor('');
       
       // Navigate to home to see the new quote
-      navigate('/');
-    } catch (error: any) {
+      navigate('/home');
+    } catch (error) {
       toast({
         title: 'Failed to submit quote',
-        description: error.message,
+        description: error instanceof Error ? error.message : 'An unexpected error occurred',
         variant: 'destructive',
       });
     } finally {

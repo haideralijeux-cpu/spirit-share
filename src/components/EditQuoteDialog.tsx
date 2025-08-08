@@ -60,10 +60,10 @@ export function EditQuoteDialog({ quote, onQuoteUpdate }: EditQuoteDialogProps) 
       });
 
       setOpen(false);
-    } catch (error: any) {
+    } catch (error) {
       toast({
         title: 'Failed to update quote',
-        description: error.message,
+        description: error instanceof Error ? error.message : 'An unexpected error occurred',
         variant: 'destructive',
       });
     } finally {

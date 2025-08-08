@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
@@ -18,9 +18,9 @@ export function Home() {
 
   useEffect(() => {
     fetchQuotes();
-  }, []);
+  }, [fetchQuotes]);
 
-  const fetchQuotes = async () => {
+  const fetchQuotes = useCallback(async () => {
     try {
       const { data, error } = await supabase
         .from('quotes')
@@ -30,16 +30,16 @@ export function Home() {
       if (error) throw error;
 
       setQuotes(data || []);
-    } catch (error: any) {
+    } catch (error) {
       toast({
         title: 'Error loading quotes',
-        description: error.message,
+        description: error instanceof Error ? error.message : 'An unexpected error occurred',
         variant: 'destructive',
       });
     } finally {
       setLoading(false);
     }
-  };
+  }, [toast]);
 
   if (loading) {
     return (
